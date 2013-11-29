@@ -1,0 +1,51 @@
+.OPTION EXPLICIT
+.Set Cabinet=off
+.Set Compress=off
+.Set MaxDiskSize=CDROM
+.Set ReservePerCabinetSize=6144
+.Set DiskDirectoryTemplate=".."
+.Set CompressionType=MSZIP
+.Set CompressionLevel=7
+.Set CompressionMemory=21
+.Set CabinetNameTemplate="RepRelojChecadorHuella.CAB"
+"Setup.Lst"
+"setup.exe"
+.Set Cabinet=on
+.Set Compress=on
+"RepRelojChecadorHuella.exe"
+"msvbvm60.dll"
+"oleaut32.dll"
+"olepro32.dll"
+"asycfilt.dll"
+"stdole2.tlb"
+"COMCAT.DLL"
+"VB6ES.DLL"
+"crviewer9.dll"
+"CRSmartTag.dll"
+"msadox.dll"
+"craxdrt9.dll"
+"KewlButtonz.ocx"
+"MSADODC.OCX"
+"MSSTDFMT.DLL"
+"ADODCES.DLL"
+"COMDLG32.OCX"
+"CMDLGES.DLL"
+"DBLIST32.OCX"
+"DBLSTES.DLL"
+"MSDATGRD.OCX"
+"DATGDES.DLL"
+"mscomctl.ocx"
+"MSCMCES.DLL"
+"msmask32.ocx"
+"MSMSKES.DLL"
+"RICHTX32.OCX"
+"RICHED32.DLL"
+"RCHTXES.DLL"
+"tabctl32.ocx"
+"TABCTES.DLL"
+"MSCOMCT2.OCX"
+"MSCC2ES.DLL"
+"MDAC_TYP.EXE"
+"SETUP1.EXE"
+"VB6STKIT.DLL"
+"ST6UNST.EXE"

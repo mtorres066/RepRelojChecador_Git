@@ -1,0 +1,4 @@
+FrmReportesReloj = -6, 12, 594, 437, Z, 19, 22, 907, 447, C
+ModuloConexion = 88, 116, 688, 541, C
+FrmReporte = 95, 53, 789, 478, C, 162, 77, 762, 502, CZ
+FrmMenuReportes = 0, 0, 981, 304, C, 22, 29, 999, 338, C
