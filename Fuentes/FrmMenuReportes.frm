@@ -5,24 +5,24 @@ Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FrmMenuReportes 
    BackColor       =   &H80000016&
    Caption         =   "Menu de Reportes Reloj Checador"
-   ClientHeight    =   5070
+   ClientHeight    =   5475
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   7560
+   ClientWidth     =   7830
    Icon            =   "FrmMenuReportes.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5070
-   ScaleWidth      =   7560
+   ScaleHeight     =   5475
+   ScaleWidth      =   7830
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame FrameBusqueda 
       Appearance      =   0  'Flat
       BackColor       =   &H80000000&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
-      Height          =   4695
-      Left            =   120
+      Height          =   4815
+      Left            =   240
       TabIndex        =   14
-      Top             =   240
+      Top             =   360
       Width           =   7335
       Begin MSDataGridLib.DataGrid DataGrid1 
          Height          =   3615
@@ -186,7 +186,7 @@ Begin VB.Form FrmMenuReportes
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   4335
+      Height          =   4815
       Left            =   2400
       TabIndex        =   8
       Top             =   360
@@ -206,7 +206,7 @@ Begin VB.Form FrmMenuReportes
          Index           =   4
          Left            =   480
          TabIndex        =   20
-         Top             =   2760
+         Top             =   3360
          Width           =   2175
       End
       Begin VB.OptionButton OptionFiltro 
@@ -224,7 +224,7 @@ Begin VB.Form FrmMenuReportes
          Index           =   3
          Left            =   480
          TabIndex        =   19
-         Top             =   2280
+         Top             =   2880
          Value           =   -1  'True
          Width           =   2535
       End
@@ -269,7 +269,7 @@ Begin VB.Form FrmMenuReportes
          Height          =   375
          Left            =   360
          TabIndex        =   11
-         Top             =   3600
+         Top             =   4200
          Width           =   2535
       End
       Begin VB.OptionButton OptionFiltro 
@@ -305,7 +305,7 @@ Begin VB.Form FrmMenuReportes
          Height          =   375
          Left            =   240
          TabIndex        =   21
-         Top             =   1920
+         Top             =   2520
          Width           =   2655
       End
       Begin VB.Line Line1 
@@ -319,7 +319,7 @@ Begin VB.Form FrmMenuReportes
          Height          =   255
          Left            =   360
          TabIndex        =   10
-         Top             =   3240
+         Top             =   3840
          Width           =   1215
       End
    End
@@ -352,7 +352,7 @@ Begin VB.Form FrmMenuReportes
          _ExtentX        =   2566
          _ExtentY        =   661
          _Version        =   393216
-         Format          =   17170433
+         Format          =   62455809
          CurrentDate     =   39761
       End
       Begin MSComCtl2.DTPicker DTFechaInicio 
@@ -364,7 +364,7 @@ Begin VB.Form FrmMenuReportes
          _ExtentX        =   2566
          _ExtentY        =   661
          _Version        =   393216
-         Format          =   17170433
+         Format          =   62455809
          CurrentDate     =   39761
       End
       Begin VB.Label Label2 
@@ -507,11 +507,21 @@ Begin VB.Form FrmMenuReportes
    Begin VB.Frame Frame3 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Equipo:"
-      Height          =   1815
+      Height          =   2295
       Left            =   240
       TabIndex        =   22
       Top             =   2880
       Width           =   1935
+      Begin VB.OptionButton Option1 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Reloj FEC"
+         Height          =   255
+         Index           =   3
+         Left            =   240
+         TabIndex        =   26
+         Top             =   1800
+         Width           =   1455
+      End
       Begin VB.OptionButton Option1 
          BackColor       =   &H00C0E0FF&
          Caption         =   "Reloj Chiapas"
@@ -582,6 +592,7 @@ Dim vEquipoCul                     As String
 Dim BCuliacan As Boolean
 Dim BSLP As Boolean
 Dim BChiapas As Boolean
+Dim BFEC As Boolean
 
 
 '<CSCM>
@@ -603,6 +614,7 @@ Private Sub Form_Load()
 BCuliacan = False
 BSLP = False
 BChiapas = False
+BFEC = False
 
 
 100     DTFechaInicio.Value = Date
@@ -1253,6 +1265,7 @@ Public Sub Imprime_Deptos()
         BCuliacan = False
         BSLP = False
         BChiapas = False
+        BFEC = False
         
         'Establece valores para las variables de fechas
 100     VDia = Day(DTFechaInicio.Value)
@@ -1270,6 +1283,7 @@ Public Sub Imprime_Deptos()
             BCuliacan = True
             BSLP = False
             BChiapas = False
+            BFEC = False
             '         ElseIf Option2(1).Value = True Then     'Baño Culiacan
             '             vEquipo = "2"
             '             vIDEquipo = 3
@@ -1281,11 +1295,19 @@ Public Sub Imprime_Deptos()
             BCuliacan = False
             BSLP = True
             BChiapas = False
+            BFEC = False
 120     ElseIf Option1(2).Value = True Then     'Reloj Chiapas
 122         vEquipo = "6"
             BCuliacan = False
             BSLP = False
             BChiapas = True
+            BFEC = False
+        ElseIf Option1(3).Value = True Then     'Reloj FEC   --------------------
+            vEquipo = "9"
+            BCuliacan = False
+            BSLP = False
+            BChiapas = False
+            BFEC = True
         End If
     
         'Rango de FECHAS y todos los Departamentos seleccionado __________________________________________________________________
@@ -1295,13 +1317,25 @@ Public Sub Imprime_Deptos()
         If BCuliacan = True Then    'Esta consultando todos en culiacan
             GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '" & vEquipo & "' "
             GCriteriaReporte = GCriteriaReporte & " OR {CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '" & vEquipoCul & "' "
+            
         ElseIf BSLP = True Then 'ESTA CONSULTANDO TODOS EN SLP
             GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '" & vEquipo & "' "
-        Else    'ESTA CONSULTANDO TODOS EN CHIAPAS
+            
+        ElseIf BChiapas = True Then   'ESTA CONSULTANDO TODOS EN CHIAPAS
             GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '" & vEquipo & "' "
+            
+        Else    'ESTA CONSULTANDO TODOS EN FEC
+            GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '" & vEquipo & "' "
+            
         End If
+        
         GNombreReporte = "ListadoxDeptos.rpt"
-       
+'        If BFEC = False Then
+'            GNombreReporte = "ListadoxDeptos.rpt"
+'        Else
+'            GNombreReporte = "ListadoxDeptos_FEC.rpt"
+'        End If
+            
 130     Screen.MousePointer = vbDefault
 
         '<EhFooter>
@@ -1335,7 +1369,8 @@ Public Sub Imprime_Seleccion_Deptos()
         BCuliacan = False
         BSLP = False
         BChiapas = False
-
+        BFEC = False
+        
 'BORRA EL CONTENIDO DE LA VARIABLE GLOBAL "GCriteriaReporte"
 GCriteriaReporte = ""
 GTituloReporte = ""
@@ -1356,16 +1391,25 @@ GTituloReporte = ""
             BCuliacan = True
             BSLP = False
             BChiapas = False
+            BFEC = False
 116     ElseIf Option1(1).Value = True Then     'Reloj SLP
 118         vEquipo = "5"
             BCuliacan = False
             BSLP = True
             BChiapas = False
+            BFEC = False
 120     ElseIf Option1(2).Value = True Then     'Reloj Chiapas
 122         vEquipo = "6"
             BCuliacan = False
             BSLP = False
             BChiapas = True
+            BFEC = False
+        ElseIf Option1(3).Value = True Then     'Reloj FEC
+            vEquipo = "9"
+            BCuliacan = False
+            BSLP = False
+            BChiapas = False
+            BFEC = True
         End If
     
         
@@ -1380,6 +1424,7 @@ GTituloReporte = ""
                     GTituloReporte = "Desde " & Format(DTFechaInicio.Value, "dd/mm/yyyy") & " Hasta " & Format(DTFechaFinal.Value, "dd/mm/yyyy")
                     GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
                     GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} LIKE '" & vEquipo & "'"
+                    
                 Else
                     'LA CONSULTA ES VENTAS CULIACAN
                     GTituloReporte = "Desde " & Format(DTFechaInicio.Value, "dd/mm/yyyy") & " Hasta " & Format(DTFechaFinal.Value, "dd/mm/yyyy")
@@ -1387,6 +1432,7 @@ GTituloReporte = ""
                     GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} LIKE '" & vEquipo & "' "
                     GCriteriaReporte = GCriteriaReporte & " OR {CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
                     GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} LIKE '" & vEquipoCul & "' "
+                    
                 End If
             Else
                 ' LA CONSULTA ES ADMINISTRACION
@@ -1394,14 +1440,21 @@ GTituloReporte = ""
                 If BCuliacan = True Then    'ES CULIACAN
                     GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
                     GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} <> '5' "
+                    
                 ElseIf BSLP = True Then
                     ' ES CONSULTA SLP
                     GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
                     GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} = '5' "
-                Else
+                    
+                ElseIf BChiapas = True Then
                     ' ES CONSULTA CHIAPAS
                     GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
                     GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} = '6' "
+                    
+                Else ' ES CONSULTA FEC
+                    GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
+                    GCriteriaReporte = GCriteriaReporte & " And {DEPARTMENTS.DEPTNAME} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} = '9' "
+                    
                 End If
             End If
             
@@ -1412,8 +1465,12 @@ GTituloReporte = ""
         
         End If
          
-        
-130     GNombreReporte = "ListadoxSeleccionDeptos.rpt"
+        GNombreReporte = "ListadoxSeleccionDeptos.rpt"
+'        If BFEC = False Then
+'130         GNombreReporte = "ListadoxSeleccionDeptos.rpt"
+'        Else
+'            GNombreReporte = "ListadoxSeleccionDeptos_FEC.rpt"
+'        End If
         'GNombreReporte = "UbicacionesCuadricula.rpt"
         
 132     Screen.MousePointer = vbDefault
@@ -1449,6 +1506,7 @@ Public Sub Imprime_Seleccion_Empleado()
         BCuliacan = False
         BSLP = False
         BChiapas = False
+        BFEC = False
 
     
         'Establece valores para las variables de fechas
@@ -1467,16 +1525,25 @@ Public Sub Imprime_Seleccion_Empleado()
             BCuliacan = True
             BSLP = False
             BChiapas = False
+            BFEC = False
 116     ElseIf Option1(1).Value = True Then     'Reloj SLP
 118         vEquipo = "5"
             BCuliacan = False
             BSLP = True
             BChiapas = False
+            BFEC = False
 120     ElseIf Option1(2).Value = True Then     'Reloj Chiapas
 122         vEquipo = "6"
             BCuliacan = False
             BSLP = False
             BChiapas = True
+            BFEC = False
+        ElseIf Option1(3).Value = True Then     'Reloj Chiapas
+            vEquipo = "9"
+            BCuliacan = False
+            BSLP = False
+            BChiapas = False
+            BFEC = True
         End If
     
         'IMPRESION DE UN SOLO EMPLEADO  __________________________________________________________________
@@ -1493,9 +1560,12 @@ Public Sub Imprime_Seleccion_Empleado()
         ElseIf BSLP = True Then 'ESTA CONSULTANDO EMPLEADO DE SLP
             GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
             GCriteriaReporte = GCriteriaReporte & " And {USERINFO.STREET} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} LIKE '5' "
-        Else    'ESTA CONSULTANDO EMPLEADO DE CHIAPAS
+        ElseIf BChiapas = True Then   'ESTA CONSULTANDO EMPLEADO DE CHIAPAS
             GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
             GCriteriaReporte = GCriteriaReporte & " And {USERINFO.STREET} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} LIKE '6' "
+        Else   'ESTA CONSULTANDO EMPLEADO DE FEC
+            GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ")"
+            GCriteriaReporte = GCriteriaReporte & " And {USERINFO.STREET} LIKE '" & TxtBusqueda.Text & "' AND {CHECKINOUT.SENSORID} LIKE '9' "
         End If
         
         
@@ -1513,15 +1583,24 @@ Public Sub Imprime_Seleccion_Empleado()
                 GCriteriaReporte = GCriteriaReporte & " OR {CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '" & vEquipoCul & "' "
             ElseIf BSLP = True Then 'ES IMP TARJETA DE ASISTENCIA SLP -TODOS-
                 GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '5' "
-            Else        'ES IMP TARJETA DE ASISTENCIA CHIAPAS -TODOS-
+            ElseIf BChiapas = True Then    'ES IMP TARJETA DE ASISTENCIA CHIAPAS -TODOS-
                 GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '6' "
+            Else   'ES IMP TARJETA DE ASISTENCIA FEC -TODOS-
+            '
+            ' AQUI LLEVARÁ UNA MODIFICACION  EL REPORTE YA QUE LA RAZON SOCIAL O NOMBRE DE LA EMPRESA ES DIFERENTE
+            '
+                GCriteriaReporte = "{CHECKINOUT.CHECKTIME} in date (" & VAño & "," & VMes & "," & VDia & ") to date (" & VAño2 & "," & VMes2 & "," & VDia2 & ") AND {CHECKINOUT.SENSORID} LIKE '9' "
             End If
 
 140         GNombreReporte = "TarjetaAsistenciaxEmpleado.rpt"
         
         Else    'NO SON TARJETAS DE ASISTENCIAS.  //////////
-        
-142         GNombreReporte = "ListadoxSeleccionEmpleado.rpt"
+            GNombreReporte = "ListadoxSeleccionEmpleado.rpt"
+'            If BFEC = False Then
+'142             GNombreReporte = "ListadoxSeleccionEmpleado.rpt"
+'            Else
+'                GNombreReporte = "ListadoxSeleccionEmpleado_FEC.rpt"
+'            End If
         
         End If
 

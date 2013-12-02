@@ -8,13 +8,13 @@ Begin VB.Form FrmReportesReloj
    ClientHeight    =   9900
    ClientLeft      =   45
    ClientTop       =   315
-   ClientWidth     =   9345
+   ClientWidth     =   9555
    Icon            =   "FrmReportesReloj.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   9900
-   ScaleWidth      =   9345
+   ScaleWidth      =   9555
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame FrameBusqueda 
@@ -23,14 +23,14 @@ Begin VB.Form FrmReportesReloj
       Left            =   240
       TabIndex        =   17
       Top             =   240
-      Width           =   8775
+      Width           =   9015
       Begin MSDataGridLib.DataGrid DataGrid2 
          Height          =   8535
          Left            =   360
          TabIndex        =   18
          Top             =   480
-         Width           =   8055
-         _ExtentX        =   14208
+         Width           =   8295
+         _ExtentX        =   14631
          _ExtentY        =   15055
          _Version        =   393216
          HeadLines       =   1
@@ -133,8 +133,8 @@ Begin VB.Form FrmReportesReloj
       Left            =   240
       TabIndex        =   3
       Top             =   3840
-      Width           =   8775
-      _ExtentX        =   15478
+      Width           =   9015
+      _ExtentX        =   15901
       _ExtentY        =   6165
       _Version        =   393216
       Appearance      =   0
@@ -226,7 +226,7 @@ Begin VB.Form FrmReportesReloj
       Left            =   240
       TabIndex        =   0
       Top             =   960
-      Width           =   8775
+      Width           =   9015
       Begin MSComCtl2.DTPicker DTFinal 
          Height          =   375
          Left            =   4080
@@ -236,7 +236,7 @@ Begin VB.Form FrmReportesReloj
          _ExtentX        =   2566
          _ExtentY        =   661
          _Version        =   393216
-         Format          =   17104897
+         Format          =   62193665
          CurrentDate     =   39755
       End
       Begin MSComCtl2.DTPicker DTInicio 
@@ -248,7 +248,7 @@ Begin VB.Form FrmReportesReloj
          _ExtentX        =   2566
          _ExtentY        =   661
          _Version        =   393216
-         Format          =   17104897
+         Format          =   62193665
          CurrentDate     =   39755
          MinDate         =   39448
       End
@@ -563,7 +563,7 @@ Begin VB.Form FrmReportesReloj
       Left            =   240
       TabIndex        =   10
       Top             =   2880
-      Width           =   8775
+      Width           =   9015
       Begin VB.TextBox TxtBusqueda 
          Appearance      =   0  'Flat
          Height          =   375
@@ -579,24 +579,33 @@ Begin VB.Form FrmReportesReloj
       Left            =   3840
       TabIndex        =   28
       Top             =   1920
-      Width           =   5175
+      Width           =   5415
+      Begin VB.OptionButton Option2 
+         Caption         =   "Reloj FEC"
+         Height          =   255
+         Index           =   1
+         Left            =   4200
+         TabIndex        =   32
+         Top             =   360
+         Width           =   1095
+      End
       Begin VB.OptionButton Option2 
          Caption         =   "Reloj Chiapas"
          Height          =   255
          Index           =   4
-         Left            =   3600
+         Left            =   2760
          TabIndex        =   31
          Top             =   360
-         Width           =   1455
+         Width           =   1335
       End
       Begin VB.OptionButton Option2 
          Caption         =   "Reloj SLP"
          Height          =   255
          Index           =   3
-         Left            =   1920
+         Left            =   1560
          TabIndex        =   30
          Top             =   360
-         Width           =   1455
+         Width           =   1095
       End
       Begin VB.OptionButton Option2 
          Caption         =   "Reloj Culiacan"
@@ -605,7 +614,7 @@ Begin VB.Form FrmReportesReloj
          Left            =   120
          TabIndex        =   29
          Top             =   360
-         Width           =   1455
+         Width           =   1335
       End
    End
    Begin VB.Label Label1 
@@ -695,7 +704,11 @@ Private Sub Form_Load()
         'Inicia el proceso de conexion a la BD del reloj checador de huella.
 113     GConectionString = "Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=\\Respaldosfepsa\relojchecadorhuella\fepsa2.mdb; Jet OLEDB:Database Password="
 114     'GConectionString = "Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=C:\Desarrollo\ReportesRelojChecador\fepsa2.mdb; Jet OLEDB:Database Password="
-    
+        
+        'Para Pruebas
+        'GConectionString = "Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=C:\Resp_TODOS_Biometricos_F9.mdb"
+        
+        
         'Casa
         'GConectionString = "Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=c:\fepsa2.mdb; Jet OLEDB:Database Password="
     
@@ -828,10 +841,12 @@ Private Sub Boton_Click(Index As Integer)
     
 108         If Option2(0).Value = True Then     'Reloj Culiacan
 110             vEquipo = "1"
+                vIDEquipo = 2
+                
+                'Consulta secundaria --
                 vEquipoCul = "8"
-112             vIDEquipo = 2
-                vIDEquipoCul = 8
-
+                vIDEquipoCul = 9
+                
                 '114         ElseIf Option2(1).Value = True Then     'Baño Culiacan
                 '116             vEquipo = "2"
                 '118             vIDEquipo = 3
@@ -844,6 +859,9 @@ Private Sub Boton_Click(Index As Integer)
 132         ElseIf Option2(4).Value = True Then     'Reloj Chiapas
 134             vEquipo = "6"
 136             vIDEquipo = 6
+            ElseIf Option2(1).Value = True Then     'Reloj FEC
+                vEquipo = "9"
+                vIDEquipo = 8
             End If
     
 138         If Option1(0).Value = True And TxtBusqueda.Text = "" Then 'Busqueda Completa x depto.
@@ -1499,6 +1517,9 @@ Private Sub TxtBusqueda_Change()
 130     ElseIf Option2(4).Value = True Then     'Reloj Chiapas
 132         vEquipo = "6"
 134         vIDEquipo = 6
+        ElseIf Option2(1).Value = True Then     'Reloj FEC
+            vEquipo = "9"
+            vIDEquipo = 9
         End If
         
 136     If Option1(0).Value = True And TxtBusqueda.Text = "" Then 'Busqueda Completa x depto.
@@ -2265,10 +2286,12 @@ Public Sub Saca_SumaMinutos()
             '120         vEquipo = 2
             '122     ElseIf Option2(1).Value = True Then     'Vestidores Culiacan
             '124         vEquipo = 3
-126     ElseIf Option2(1).Value = True Then     'Reloj SLP
+126     ElseIf Option2(3).Value = True Then     'Reloj SLP
 128         vEquipo = 4
-130     ElseIf Option2(1).Value = True Then     'Reloj Chiapas
+130     ElseIf Option2(4).Value = True Then     'Reloj Chiapas
 132         vEquipo = 5
+        ElseIf Option2(1).Value = True Then     'Reloj Chiapas
+            vEquipo = 9
         End If
     
 134     vCodEmpleado = DataGrid1.Columns(2).Text
