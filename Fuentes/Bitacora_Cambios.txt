@@ -1,0 +1,8 @@
+02 Diciembre 2013  14:36
+
+- Tambien se cambiaron los LOGOS de los reportes a LOGO_PT
+
+- Se realizaron cambios para que el sistemita pueda mostrar informacion 
+del equipo reloj de FEC
+
+- Se volvió a generar el repositorio Git en XP Virtual de PC Soporte
